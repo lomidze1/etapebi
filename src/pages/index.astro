@@ -1,0 +1,93 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import ProcessSteps from '../components/ProcessSteps.astro';
+import ContactCTA from '../components/ContactCTA.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { getCollection } from 'astro:content';
+
+const services = [
+  {
+    title: 'ეტაპობრივი ფოტოანგარიში',
+    description:
+      'ვაფიქსირებ მშენებლობის ყოველი ეტაპის ფაქტობრივ მდგომარეობას ერთიანი მეთოდოლოგიით. შედეგი — სრული ფოტოანგარიში თარიღით და ხედის სტრუქტურით.',
+  },
+  {
+    title: 'ოქმების მომზადება',
+    description:
+      'ვამზადებ ეტაპის დასრულების ოქმს — ფაქტებით, თარიღით და ნებართვის ნომრით. ოქმი მზადდება საჯარო რეესტრის სტანდარტული ფორმის შესაბამისად.',
+  },
+  {
+    title: 'დოკუმენტური აღრიცხვა',
+    description:
+      'ვაერთიანებ ეტაპის ფოტოანგარიშს, ოქმს და თანდართულ ნახაზებს ერთ პაკეტში. მესაკუთრე იღებს სრულ აღრიცხვას, რომელიც აკმაყოფილებს საჯარო რეესტრის მოთხოვნებს.',
+  },
+];
+
+const recentProjects = (await getCollection('projects'))
+  .sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime())
+  .slice(0, 2);
+---
+
+<BaseLayout
+  title="გიორგი ლომიძე — მშენებლობის ეტაპების სპეციალისტი"
+  description="ეტაპობრივი ფოტოანგარიში, ოქმების მომზადება და დოკუმენტური აღრიცხვა მშენებლობის პროცესისთვის ხაშურსა და საქართველოში."
+>
+  <Hero />
+
+  <section
+    aria-labelledby="services-heading"
+    class="max-w-5xl mx-auto px-6 py-24"
+  >
+    <h2
+      id="services-heading"
+      class="text-3xl sm:text-4xl font-medium tracking-tight"
+    >
+      მომსახურება
+    </h2>
+    <p class="mt-4 text-muted max-w-2xl">
+      სამი ძირითადი მიმართულება — ფოტოფიქსაცია, ოქმი, აღრიცხვა.
+    </p>
+    <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {
+        services.map((s) => (
+          <ServiceCard title={s.title} description={s.description} />
+        ))
+      }
+    </div>
+  </section>
+
+  <ProcessSteps />
+
+  {
+    recentProjects.length > 0 && (
+      <section
+        aria-labelledby="recent-heading"
+        class="max-w-5xl mx-auto px-6 py-24"
+      >
+        <div class="flex flex-wrap items-baseline justify-between gap-4 mb-12">
+          <h2
+            id="recent-heading"
+            class="text-3xl sm:text-4xl font-medium tracking-tight"
+          >
+            უახლესი პროექტები
+          </h2>
+          <a
+            href="/projects"
+            class="text-sm text-muted hover:text-primary transition-colors"
+          >
+            ყველა პროექტის ნახვა →
+          </a>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+          {recentProjects.map((p) => (
+            <ProjectCard project={p} />
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  <ContactCTA />
+</BaseLayout>

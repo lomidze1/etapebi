@@ -1,0 +1,70 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+}
+
+const { project } = Astro.props;
+const { data } = project;
+const STAGE_COUNT = 5;
+const completed = new Set(data.stagesCompleted);
+---
+
+<article class="group">
+  <a
+    href={`/projects/${project.id}`}
+    class="block"
+    aria-labelledby={`project-${project.id}-title`}
+  >
+    <div class="aspect-[4/3] bg-elevated border border-subtle mb-4 overflow-hidden">
+      {
+        data.coverImage ? (
+          <Image
+            src={data.coverImage}
+            alt={data.title}
+            widths={[640, 1080]}
+            sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+            formats={['avif', 'webp']}
+            class="w-full h-full object-cover transition-opacity group-hover:opacity-90"
+          />
+        ) : (
+          <div
+            class="w-full h-full flex items-center justify-center text-xs text-muted"
+            aria-hidden="true"
+          >
+            სურათი მზადდება
+          </div>
+        )
+      }
+    </div>
+    <h2
+      id={`project-${project.id}-title`}
+      class="text-lg font-medium tracking-tight text-primary group-hover:underline underline-offset-4"
+    >
+      {data.title}
+    </h2>
+    <p class="mt-1 text-sm text-muted">{data.location}</p>
+    <ol class="flex gap-1.5 mt-3" aria-label="ეტაპები">
+      {
+        Array.from({ length: STAGE_COUNT }, (_, i) => i + 1).map((stage) => {
+          const isDone = completed.has(stage);
+          return (
+            <li
+              aria-label={
+                isDone
+                  ? `${stage}-ლი ეტაპი დასრულებული`
+                  : `${stage}-ლი ეტაპი დაუწყებელი`
+              }
+              class:list={[
+                'w-2 h-2 rounded-full',
+                isDone ? 'bg-primary' : 'border border-muted',
+              ]}
+            />
+          );
+        })
+      }
+    </ol>
+  </a>
+</article>

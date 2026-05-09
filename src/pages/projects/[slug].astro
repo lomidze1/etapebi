@@ -1,0 +1,229 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { Image } from 'astro:assets';
+import { getCollection, render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+}
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+const { data } = project;
+
+const STAGE_COUNT = 5;
+const completed = new Set(data.stagesCompleted);
+const currentStage: number | null = (() => {
+  for (let i = 1; i <= STAGE_COUNT; i++) {
+    if (!completed.has(i)) return i;
+  }
+  return null;
+})();
+
+type StageState = 'completed' | 'current' | 'pending';
+
+function stageState(stage: number): StageState {
+  if (completed.has(stage)) return 'completed';
+  if (currentStage === stage) return 'current';
+  return 'pending';
+}
+
+function stageLabel(stage: number): string {
+  const state = stageState(stage);
+  if (state === 'completed') return `${stage}-ლი ეტაპი — დასრულებული`;
+  if (state === 'current') return `${stage}-ლი ეტაპი — მიმდინარე`;
+  return `${stage}-ლი ეტაპი — დაუწყებელი`;
+}
+
+const dateFormatter = new Intl.DateTimeFormat('ka-GE', {
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+});
+
+function isoDate(d: Date): string {
+  return d.toISOString().split('T')[0];
+}
+
+const [cityRaw, ...streetParts] = data.location.split(',').map((s) => s.trim());
+const city = cityRaw || 'ხაშური';
+const streetAddress = streetParts.join(', ');
+
+const placeSchema = {
+  '@type': 'Place',
+  name: data.title,
+  address: {
+    '@type': 'PostalAddress',
+    addressCountry: 'GE',
+    addressLocality: city,
+    ...(streetAddress ? { streetAddress } : {}),
+  },
+};
+
+const articleJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: data.title,
+  description: data.description,
+  datePublished: data.publishedAt.toISOString(),
+  inLanguage: 'ka',
+  author: {
+    '@type': 'Person',
+    name: 'გიორგი ლომიძე',
+    url: 'https://etapebi.com',
+  },
+  publisher: {
+    '@type': 'ProfessionalService',
+    name: 'გიორგი ლომიძე',
+    url: 'https://etapebi.com',
+  },
+  about: placeSchema,
+};
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'მთავარი', item: 'https://etapebi.com/' },
+    { '@type': 'ListItem', position: 2, name: 'პროექტები', item: 'https://etapebi.com/projects' },
+    { '@type': 'ListItem', position: 3, name: data.title },
+  ],
+};
+
+const metaDescription =
+  data.description.length > 155
+    ? `${data.description.slice(0, 152)}…`
+    : data.description;
+---
+
+<BaseLayout
+  title={`${data.title} — გიორგი ლომიძე`}
+  description={metaDescription}
+  extraJsonLd={[breadcrumbJsonLd, articleJsonLd]}
+>
+  <article class="max-w-5xl mx-auto px-6 py-16">
+    <nav aria-label="ბილიკი" class="text-sm text-muted mb-8">
+      <ol class="flex flex-wrap items-center gap-2">
+        <li>
+          <a href="/" class="hover:text-primary transition-colors">მთავარი</a>
+        </li>
+        <li aria-hidden="true">/</li>
+        <li>
+          <a href="/projects" class="hover:text-primary transition-colors">პროექტები</a>
+        </li>
+        <li aria-hidden="true">/</li>
+        <li class="text-primary" aria-current="page">{data.title}</li>
+      </ol>
+    </nav>
+
+    <header class="mb-12">
+      <h1 class="text-3xl sm:text-4xl font-medium tracking-tight">{data.title}</h1>
+      <p class="mt-3 text-lg text-muted">{data.location}</p>
+    </header>
+
+    {
+      data.coverImage && (
+        <Image
+          src={data.coverImage}
+          alt={`${data.title} — სათავე სურათი`}
+          widths={[640, 1080, 1920]}
+          sizes="(min-width: 1024px) 1024px, 100vw"
+          formats={['avif', 'webp']}
+          loading="eager"
+          class="w-full h-auto border border-subtle mb-12"
+        />
+      )
+    }
+
+    <section aria-labelledby="stages-heading" class="mb-12">
+      <h2 id="stages-heading" class="text-sm font-medium text-muted mb-4">ეტაპები</h2>
+      <ol class="flex flex-wrap gap-2" aria-label="მშენებლობის ხუთი ეტაპი">
+        {
+          Array.from({ length: STAGE_COUNT }, (_, i) => i + 1).map((stage) => {
+            const state = stageState(stage);
+            return (
+              <li
+                aria-label={stageLabel(stage)}
+                class:list={[
+                  'flex items-center justify-center w-10 h-10 text-sm transition-colors',
+                  state === 'completed' && 'bg-primary text-base border-2 border-primary',
+                  state === 'current' && 'bg-base text-primary border-2 border-primary',
+                  state === 'pending' && 'bg-base text-muted border-2 border-subtle',
+                ]}
+              >
+                <span aria-hidden="true">{stage}</span>
+              </li>
+            );
+          })
+        }
+      </ol>
+    </section>
+
+    <section aria-labelledby="meta-heading" class="mb-12">
+      <h2 id="meta-heading" class="text-sm font-medium text-muted mb-4">დოკუმენტაცია</h2>
+      <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 text-sm border-t border-subtle">
+        <div class="flex justify-between sm:flex-col sm:gap-1 border-b border-subtle py-4">
+          <dt class="text-muted">ობიექტის ტიპი</dt>
+          <dd class="text-primary">{data.buildingType}</dd>
+        </div>
+        <div class="flex justify-between sm:flex-col sm:gap-1 border-b border-subtle py-4">
+          <dt class="text-muted">შენობის კლასი</dt>
+          <dd class="text-primary">{data.buildingClass}</dd>
+        </div>
+        <div class="flex justify-between sm:flex-col sm:gap-1 border-b border-subtle py-4">
+          <dt class="text-muted">ნებართვის გაცემა</dt>
+          <dd class="text-primary">
+            <time datetime={isoDate(data.permitDate)}>
+              {dateFormatter.format(data.permitDate)}
+            </time>
+          </dd>
+        </div>
+        <div class="flex justify-between sm:flex-col sm:gap-1 border-b border-subtle py-4">
+          <dt class="text-muted">ნებართვა ძალაშია</dt>
+          <dd class="text-primary">
+            <time datetime={isoDate(data.permitValidUntil)}>
+              {dateFormatter.format(data.permitValidUntil)}
+            </time>
+          </dd>
+        </div>
+      </dl>
+    </section>
+
+    <section class="mb-12">
+      <p class="text-lg text-primary leading-relaxed max-w-3xl">{data.description}</p>
+    </section>
+
+    {
+      data.gallery.length > 0 && (
+        <section aria-labelledby="gallery-heading" class="mb-12">
+          <h2 id="gallery-heading" class="text-sm font-medium text-muted mb-4">გალერეა</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {data.gallery.map((image, i) => (
+              <Image
+                src={image}
+                alt={`${data.title} — სურათი ${i + 1}`}
+                widths={[640, 1080, 1920]}
+                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                formats={['avif', 'webp']}
+                class="w-full h-auto border border-subtle"
+              />
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    <section class="text-primary max-w-3xl space-y-4 leading-relaxed">
+      <Content />
+    </section>
+  </article>
+</BaseLayout>

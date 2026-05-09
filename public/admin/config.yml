@@ -1,0 +1,90 @@
+backend:
+  name: github
+  repo: YOUR-USERNAME/etapebi
+  branch: main
+  base_url: https://etapebi.com
+  auth_endpoint: oauth/auth
+
+local_backend: true
+
+site_url: https://etapebi.com
+display_url: https://etapebi.com
+logo_url: https://etapebi.com/og-image.png
+
+media_folder: "public/uploads"
+public_folder: "/uploads"
+
+locale: "ka"
+
+collections:
+  - name: "projects"
+    label: "პროექტები"
+    label_singular: "პროექტი"
+    folder: "src/content/projects"
+    extension: "mdx"
+    format: "frontmatter"
+    create: true
+    slug: "{{slug}}"
+    media_folder: ""
+    public_folder: ""
+    editor:
+      preview: true
+    summary: "{{title}}"
+    fields:
+      - { label: "სათაური", name: "title", widget: "string" }
+      - { label: "ლოკაცია", name: "location", widget: "string" }
+      - { label: "ობიექტის ტიპი", name: "buildingType", widget: "string" }
+      - { label: "ნაგებობის კლასი", name: "buildingClass", widget: "string" }
+      - {
+          label: "ნებართვის გაცემა",
+          name: "permitDate",
+          widget: "datetime",
+          format: "YYYY-MM-DD",
+          date_format: "YYYY-MM-DD",
+          time_format: false,
+          picker_utc: false
+        }
+      - {
+          label: "ნებართვა ძალაშია",
+          name: "permitValidUntil",
+          widget: "datetime",
+          format: "YYYY-MM-DD",
+          date_format: "YYYY-MM-DD",
+          time_format: false,
+          picker_utc: false
+        }
+      - label: "დასრულებული ეტაპები"
+        name: "stagesCompleted"
+        widget: "select"
+        multiple: true
+        required: false
+        default: []
+        options:
+          - { label: "1-ლი ეტაპი", value: 1 }
+          - { label: "მე-2 ეტაპი", value: 2 }
+          - { label: "მე-3 ეტაპი", value: 3 }
+          - { label: "მე-4 ეტაპი", value: 4 }
+          - { label: "მე-5 ეტაპი", value: 5 }
+      - {
+          label: "სათავე სურათი",
+          name: "coverImage",
+          widget: "image",
+          required: false
+        }
+      - label: "გალერეა"
+        name: "gallery"
+        widget: "list"
+        required: false
+        default: []
+        field: { label: "სურათი", name: "image", widget: "image" }
+      - { label: "მოკლე აღწერა", name: "description", widget: "text" }
+      - {
+          label: "გამოქვეყნების თარიღი",
+          name: "publishedAt",
+          widget: "datetime",
+          format: "YYYY-MM-DD",
+          date_format: "YYYY-MM-DD",
+          time_format: false,
+          picker_utc: false
+        }
+      - { label: "ძირითადი ტექსტი", name: "body", widget: "markdown" }

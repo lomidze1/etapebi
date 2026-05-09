@@ -1,0 +1,41 @@
+---
+import Button from './Button.astro';
+---
+
+<section aria-labelledby="cta-heading" class="max-w-5xl mx-auto px-6 py-24">
+  <div
+    class="bg-elevated border border-subtle p-12 sm:p-16 text-center"
+  >
+    <h2
+      id="cta-heading"
+      class="text-3xl sm:text-4xl font-medium tracking-tight"
+    >
+      კონტაქტი
+    </h2>
+    <p class="mt-4 text-muted max-w-xl mx-auto leading-relaxed">
+      შეკვეთის ან საკონსულტაციო ზარის გასაგზავნად დაუკავშირდით ტელეფონით ან ემაილით.
+    </p>
+    <div
+      class="mt-8 flex flex-col sm:flex-row gap-3 sm:gap-6 justify-center items-center text-primary"
+    >
+      <a
+        href="tel:+995593502093"
+        class="hover:opacity-80 transition-opacity"
+      >
+        +995 593 50 20 93
+      </a>
+      <span class="text-muted hidden sm:inline" aria-hidden="true">·</span>
+      <a
+        href="mailto:info@etapebi.com"
+        class="hover:opacity-80 transition-opacity"
+      >
+        info@etapebi.com
+      </a>
+    </div>
+    <div class="mt-10 inline-block">
+      <Button href="/contact" variant="primary">
+        კონტაქტის გვერდზე გადასვლა
+      </Button>
+    </div>
+  </div>
+</section>

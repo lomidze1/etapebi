@@ -1,0 +1,180 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
+
+const url = new URL(Astro.request.url);
+const sent = url.searchParams.get('sent') === '1';
+const errorParam = url.searchParams.get('error');
+
+const errorMessages: Record<string, string> = {
+  turnstile: 'spam-შემოწმება ვერ გავიდა — სცადეთ ხელახლა.',
+  server: 'სერვერის შეცდომა — სცადეთ მოგვიანებით ან დაუკავშირდით ტელეფონით.',
+  'contact-method': 'მიუთითეთ ტელეფონი ან ემაილი — ერთი მაინც.',
+};
+
+const errorText = errorParam
+  ? (errorMessages[errorParam] ?? 'გადაამოწმეთ ველები და სცადეთ ხელახლა.')
+  : null;
+---
+
+<BaseLayout
+  title="კონტაქტი — გიორგი ლომიძე"
+  description="დაუკავშირდით გიორგი ლომიძეს ფოტოანგარიშისა და ოქმების მოსამზადებლად — ტელეფონი, ემაილი, წერილობითი მოთხოვნა."
+>
+  <section class="max-w-2xl mx-auto px-6 py-24">
+    <h1 class="text-4xl sm:text-5xl font-medium tracking-tight">კონტაქტი</h1>
+    <p class="mt-6 text-lg text-muted">
+      პირდაპირი კონტაქტი — ტელეფონი, ემაილი ან წერილობითი მოთხოვნა ფორმით.
+    </p>
+
+    <dl class="mt-12 space-y-3 text-primary">
+      <div class="flex flex-wrap gap-x-3">
+        <dt class="text-muted">ტელეფონი:</dt>
+        <dd>
+          <a href="tel:+995593502093" class="hover:opacity-80 transition-opacity">
+            +995 593 50 20 93
+          </a>
+        </dd>
+      </div>
+      <div class="flex flex-wrap gap-x-3">
+        <dt class="text-muted">ემაილი:</dt>
+        <dd>
+          <a href="mailto:info@etapebi.com" class="hover:opacity-80 transition-opacity">
+            info@etapebi.com
+          </a>
+        </dd>
+      </div>
+      <div class="flex flex-wrap gap-x-3">
+        <dt class="text-muted">სამოქმედო ზონა:</dt>
+        <dd>ხაშური და საქართველოს მასშტაბით.</dd>
+      </div>
+    </dl>
+
+    {
+      sent && (
+        <div
+          role="status"
+          class="mt-12 p-6 bg-elevated border border-primary text-primary"
+        >
+          შეტყობინება მიღებულია. გიპასუხებთ მცირე ვადაში.
+        </div>
+      )
+    }
+
+    {
+      errorText && !sent && (
+        <div
+          role="alert"
+          class="mt-12 p-6 bg-elevated border border-muted text-primary"
+        >
+          გაგზავნა ვერ მოხერხდა. {errorText}
+        </div>
+      )
+    }
+
+    <form
+      method="POST"
+      action="/api/contact"
+      class="mt-12 space-y-6"
+      aria-labelledby="form-heading"
+    >
+      <h2 id="form-heading" class="text-2xl font-medium tracking-tight">
+        წერილობითი მოთხოვნა
+      </h2>
+
+      <div>
+        <label for="name" class="block text-sm font-medium text-muted">
+          სახელი
+        </label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          required
+          minlength="2"
+          maxlength="100"
+          autocomplete="name"
+          class="mt-2 w-full bg-elevated border border-subtle px-4 py-3 text-primary focus:border-primary"
+        />
+      </div>
+
+      <div>
+        <label for="phone" class="block text-sm font-medium text-muted">
+          ტელეფონი (სურვილისამებრ)
+        </label>
+        <input
+          type="tel"
+          id="phone"
+          name="phone"
+          maxlength="30"
+          autocomplete="tel"
+          aria-describedby="contact-help"
+          class="mt-2 w-full bg-elevated border border-subtle px-4 py-3 text-primary focus:border-primary"
+        />
+      </div>
+
+      <div>
+        <label for="email" class="block text-sm font-medium text-muted">
+          ემაილი (სურვილისამებრ)
+        </label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          maxlength="200"
+          autocomplete="email"
+          aria-describedby="contact-help"
+          class="mt-2 w-full bg-elevated border border-subtle px-4 py-3 text-primary focus:border-primary"
+        />
+      </div>
+
+      <p id="contact-help" class="text-xs text-muted">
+        ტელეფონი ან ემაილი — ერთი მაინც სავალდებულოა საპასუხოდ.
+      </p>
+
+      <div>
+        <label for="message" class="block text-sm font-medium text-muted">
+          შეტყობინება
+        </label>
+        <textarea
+          id="message"
+          name="message"
+          required
+          minlength="10"
+          maxlength="5000"
+          rows="6"
+          class="mt-2 w-full bg-elevated border border-subtle px-4 py-3 text-primary focus:border-primary resize-y"
+        ></textarea>
+      </div>
+
+      {
+        turnstileSiteKey && (
+          <div
+            class="cf-turnstile"
+            data-sitekey={turnstileSiteKey}
+            data-theme="dark"
+          />
+        )
+      }
+
+      <button
+        type="submit"
+        class="inline-flex items-center justify-center px-6 py-3 font-medium bg-primary text-base transition-opacity hover:opacity-90"
+      >
+        შეტყობინების გაგზავნა
+      </button>
+    </form>
+  </section>
+
+  {
+    turnstileSiteKey && (
+      <script
+        is:inline
+        src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+        async
+        defer
+      />
+    )
+  }
+</BaseLayout>

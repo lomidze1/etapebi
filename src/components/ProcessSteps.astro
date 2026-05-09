@@ -1,0 +1,64 @@
+---
+const steps = [
+  {
+    number: '01',
+    title: 'ობიექტის დათვალიერება',
+    description:
+      'მუშაობა იწყება ვიზიტით — ვამოწმებ ნებართვას, საკადასტრო კოდს და ეტაპის მიმდინარე მდგომარეობას.',
+  },
+  {
+    number: '02',
+    title: 'ფოტოფიქსაცია',
+    description:
+      'ვაფიქსირებ ეტაპის ფაქტობრივ მდგომარეობას ერთიანი მეთოდოლოგიით — ხედი, ხარისხი, თარიღი.',
+  },
+  {
+    number: '03',
+    title: 'ოქმის შედგენა',
+    description:
+      'ვამზადებ ეტაპის ოქმს ფაქტებით, თარიღით და ნებართვის ნომრით.',
+  },
+  {
+    number: '04',
+    title: 'დოკუმენტური აღრიცხვა',
+    description:
+      'ვაფიქსირებ შედეგს საჯარო რეესტრის მოთხოვნებთან თანხვედრით.',
+  },
+  {
+    number: '05',
+    title: 'გადაცემა',
+    description:
+      'მესაკუთრე იღებს სრულ პაკეტს — ფოტოანგარიში, ოქმი და თანდართული ნახაზები.',
+  },
+];
+---
+
+<section aria-labelledby="process-heading" class="max-w-5xl mx-auto px-6 py-24">
+  <h2
+    id="process-heading"
+    class="text-3xl sm:text-4xl font-medium tracking-tight"
+  >
+    როგორ ვმუშაობ
+  </h2>
+  <p class="mt-4 text-muted max-w-2xl">
+    ხუთეტაპიანი პროცესი — ობიექტის დათვალიერებიდან მესაკუთრესთვის გადაცემამდე.
+  </p>
+  <ol
+    class="mt-12 grid grid-cols-1 lg:grid-cols-5 gap-y-10 lg:gap-x-0"
+    aria-label="მუშაობის ხუთი ნაბიჯი"
+  >
+    {
+      steps.map((step) => (
+        <li class="lg:px-4">
+          <div class="text-3xl font-medium text-muted">{step.number}</div>
+          <div class="mt-4 lg:border-t lg:border-subtle lg:pt-4">
+            <h3 class="text-lg font-medium text-primary">{step.title}</h3>
+            <p class="mt-2 text-sm text-muted leading-relaxed">
+              {step.description}
+            </p>
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+</section>
