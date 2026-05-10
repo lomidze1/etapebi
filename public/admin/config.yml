@@ -1,6 +1,6 @@
 backend:
   name: github
-  repo: YOUR-USERNAME/etapebi
+  repo: lomidze1/etapebi
   branch: main
   base_url: https://etapebi.com
   auth_endpoint: oauth/auth
