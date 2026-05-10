@@ -5,6 +5,7 @@ import ServiceCard from '../components/ServiceCard.astro';
 import ProcessSteps from '../components/ProcessSteps.astro';
 import ContactCTA from '../components/ContactCTA.astro';
 import ProjectCard from '../components/ProjectCard.astro';
+import Container from '../components/Container.astro';
 import { getCollection } from 'astro:content';
 
 const services = [
@@ -28,18 +29,24 @@ const services = [
 const recentProjects = (await getCollection('projects'))
   .sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime())
   .slice(0, 2);
+
+const websiteJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'გიორგი ლომიძე',
+  url: 'https://etapebi.com',
+  inLanguage: 'ka',
+};
 ---
 
 <BaseLayout
   title="გიორგი ლომიძე — მშენებლობის ეტაპების სპეციალისტი"
-  description="ეტაპობრივი ფოტოანგარიში, ოქმების მომზადება და დოკუმენტური აღრიცხვა მშენებლობის პროცესისთვის ხაშურსა და საქართველოში."
+  description="ეტაპობრივი ფოტოანგარიში, ოქმების მომზადება და დოკუმენტური აღრიცხვა მშენებლობის პროცესისთვის საქართველოში."
+  extraJsonLd={[websiteJsonLd]}
 >
   <Hero />
 
-  <section
-    aria-labelledby="services-heading"
-    class="max-w-5xl mx-auto px-6 py-16 sm:py-24"
-  >
+  <Container as="section" aria-labelledby="services-heading" class="py-16 sm:py-24">
     <h2
       id="services-heading"
       class="text-3xl sm:text-4xl font-medium tracking-tight"
@@ -56,36 +63,50 @@ const recentProjects = (await getCollection('projects'))
         ))
       }
     </div>
-  </section>
+  </Container>
 
   <ProcessSteps />
 
   {
     recentProjects.length > 0 && (
-      <section
-        aria-labelledby="recent-heading"
-        class="max-w-5xl mx-auto px-6 py-16 sm:py-24"
-      >
-        <div class="flex flex-wrap items-baseline justify-between gap-4 mb-12">
-          <h2
-            id="recent-heading"
-            class="text-3xl sm:text-4xl font-medium tracking-tight"
-          >
-            უახლესი პროექტები
-          </h2>
-          <a
-            href="/projects"
-            class="text-sm text-muted hover:text-primary transition-colors"
-          >
-            ყველა პროექტის ნახვა →
-          </a>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+      <Container as="section" aria-labelledby="recent-heading" class="py-16 sm:py-24">
+        <h2
+          id="recent-heading"
+          class="text-3xl sm:text-4xl font-medium tracking-tight"
+        >
+          უახლესი პროექტები
+        </h2>
+        <p class="mt-4 text-muted max-w-2xl">
+          დასრულებული და მიმდინარე ობიექტების ფოტოანგარიშები.
+        </p>
+        <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 gap-8">
           {recentProjects.map((p) => (
             <ProjectCard project={p} />
           ))}
         </div>
-      </section>
+        <div class="mt-10">
+          <a
+            href="/projects"
+            class="inline-flex items-center gap-2 text-sm text-muted hover:text-primary transition-colors"
+          >
+            ყველა პროექტის ნახვა
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="square"
+              aria-hidden="true"
+            >
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="13 6 19 12 13 18" />
+            </svg>
+          </a>
+        </div>
+      </Container>
     )
   }
 

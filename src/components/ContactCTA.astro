@@ -1,8 +1,9 @@
 ---
 import Button from './Button.astro';
+import Container from './Container.astro';
 ---
 
-<section aria-labelledby="cta-heading" class="max-w-5xl mx-auto px-6 py-16 sm:py-24">
+<Container as="section" aria-labelledby="cta-heading" class="py-16 sm:py-24">
   <div
     class="bg-elevated border border-subtle p-8 sm:p-12 lg:p-16 text-center"
   >
@@ -38,4 +39,4 @@ import Button from './Button.astro';
       </Button>
     </div>
   </div>
-</section>
+</Container>

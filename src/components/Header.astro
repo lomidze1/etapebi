@@ -1,4 +1,6 @@
 ---
+import Container from './Container.astro';
+
 const navItems = [
   { href: '/', label: 'მთავარი' },
   { href: '/services', label: 'მომსახურება' },
@@ -17,8 +19,8 @@ function isActive(href: string): boolean {
 ---
 
 <header class="border-b border-subtle">
-  <div
-    class="max-w-5xl mx-auto px-6 py-5 md:py-6 flex items-center justify-between gap-4"
+  <Container
+    class="py-5 md:py-6 flex items-center justify-between gap-4"
   >
     <a
       href="/"
@@ -93,14 +95,14 @@ function isActive(href: string): boolean {
         <line x1="18" y1="6" x2="6" y2="18"></line>
       </svg>
     </button>
-  </div>
+  </Container>
 
   <nav
     id="mobile-menu"
     aria-label="მობილური ნავიგაცია"
     class="md:hidden hidden border-t border-subtle"
   >
-    <ul class="max-w-5xl mx-auto px-6 py-2">
+    <Container as="ul" class="py-2">
       {
         navItems.map((item) => {
           const active = isActive(item.href);
@@ -120,7 +122,7 @@ function isActive(href: string): boolean {
           );
         })
       }
-    </ul>
+    </Container>
   </nav>
 </header>
 

@@ -10,8 +10,7 @@ interface Context {
   env: Env;
 }
 
-const PHONE_RE = /^[+]?[\d\s]{6,30}$/;
-const PHONE_MIN_DIGITS = 6;
+const PHONE_RE = /^\+995\d{9}$/;
 const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 
 function wantsJson(request: Request): boolean {
@@ -59,15 +58,12 @@ export async function onRequestPost(context: Context): Promise<Response> {
   const message = (form.get('message') ?? '').toString().trim();
   const turnstileToken = (form.get('cf-turnstile-response') ?? '').toString();
 
+  const normalizedPhone = phone.replace(/\s/g, '');
   const errors: string[] = [];
   if (name.length < 2 || name.length > 100) errors.push('name');
-  if (!phone || !PHONE_RE.test(phone) || phone.replace(/\D/g, '').length < PHONE_MIN_DIGITS) {
-    errors.push('phone');
-  }
+  if (!PHONE_RE.test(normalizedPhone)) errors.push('phone');
   if (email && !EMAIL_RE.test(email)) errors.push('email');
-  if (message.length < 10 || message.length > 5000 || !/\s/.test(message)) {
-    errors.push('message');
-  }
+  if (message.length > 5000) errors.push('message');
   if (!turnstileToken) errors.push('turnstile');
 
   if (errors.length > 0) {
@@ -95,11 +91,11 @@ export async function onRequestPost(context: Context): Promise<Response> {
   const subject = `etapebi.com — შეტყობინება ${name}-ისგან`;
   const body = [
     `სახელი: ${name}`,
-    `ტელეფონი: ${phone}`,
+    `ტელეფონი: ${normalizedPhone}`,
     `ემაილი: ${email || '—'}`,
     '',
     'შეტყობინება:',
-    message,
+    message || '—',
   ].join('\n');
 
   const emailRes = await fetch('https://api.resend.com/emails', {

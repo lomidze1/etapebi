@@ -1,8 +1,9 @@
 ---
 import Button from './Button.astro';
+import Container from './Container.astro';
 ---
 
-<section class="max-w-5xl mx-auto px-6 py-16 sm:py-24 lg:py-32">
+<Container as="section" class="py-16 sm:py-24 lg:py-32">
   <h1 class="text-4xl sm:text-5xl lg:text-6xl font-medium tracking-tight">
     გიორგი ლომიძე
   </h1>
@@ -16,4 +17,4 @@ import Button from './Button.astro';
     <Button href="/contact" variant="primary">კონტაქტი</Button>
     <Button href="/projects" variant="secondary">პროექტების ნახვა</Button>
   </div>
-</section>
+</Container>
