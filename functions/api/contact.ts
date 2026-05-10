@@ -10,13 +10,42 @@ interface Context {
   env: Env;
 }
 
-const PHONE_RE = /^[+\d\s\-()]{6,30}$/;
+const PHONE_RE = /^[+]?[\d\s]{6,30}$/;
+const PHONE_MIN_DIGITS = 6;
 const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 
-function redirect(target: string): Response {
+function wantsJson(request: Request): boolean {
+  const accept = request.headers.get('Accept') ?? '';
+  return accept.includes('application/json');
+}
+
+function fail(
+  request: Request,
+  errors: string[],
+  status = 400,
+): Response {
+  if (wantsJson(request)) {
+    return new Response(JSON.stringify({ ok: false, errors }), {
+      status,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
   return new Response(null, {
     status: 303,
-    headers: { Location: target },
+    headers: { Location: `/contact?error=${encodeURIComponent(errors.join(','))}` },
+  });
+}
+
+function ok(request: Request): Response {
+  if (wantsJson(request)) {
+    return new Response(JSON.stringify({ ok: true }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+  return new Response(null, {
+    status: 303,
+    headers: { Location: '/contact?sent=1' },
   });
 }
 
@@ -32,14 +61,17 @@ export async function onRequestPost(context: Context): Promise<Response> {
 
   const errors: string[] = [];
   if (name.length < 2 || name.length > 100) errors.push('name');
-  if (message.length < 10 || message.length > 5000) errors.push('message');
-  if (!phone && !email) errors.push('contact-method');
-  if (phone && !PHONE_RE.test(phone)) errors.push('phone');
+  if (!phone || !PHONE_RE.test(phone) || phone.replace(/\D/g, '').length < PHONE_MIN_DIGITS) {
+    errors.push('phone');
+  }
   if (email && !EMAIL_RE.test(email)) errors.push('email');
+  if (message.length < 10 || message.length > 5000 || !/\s/.test(message)) {
+    errors.push('message');
+  }
   if (!turnstileToken) errors.push('turnstile');
 
   if (errors.length > 0) {
-    return redirect(`/contact?error=${encodeURIComponent(errors.join(','))}`);
+    return fail(request, errors);
   }
 
   const ip = request.headers.get('CF-Connecting-IP') ?? '';
@@ -57,13 +89,13 @@ export async function onRequestPost(context: Context): Promise<Response> {
   );
   const tsData = (await tsRes.json()) as { success: boolean };
   if (!tsData.success) {
-    return redirect('/contact?error=turnstile');
+    return fail(request, ['turnstile']);
   }
 
   const subject = `etapebi.com — შეტყობინება ${name}-ისგან`;
   const body = [
     `სახელი: ${name}`,
-    `ტელეფონი: ${phone || '—'}`,
+    `ტელეფონი: ${phone}`,
     `ემაილი: ${email || '—'}`,
     '',
     'შეტყობინება:',
@@ -88,8 +120,8 @@ export async function onRequestPost(context: Context): Promise<Response> {
   if (!emailRes.ok) {
     const errorBody = await emailRes.text();
     console.error('Resend API error', emailRes.status, errorBody);
-    return redirect('/contact?error=server');
+    return fail(request, ['server'], 500);
   }
 
-  return redirect('/contact?sent=1');
+  return ok(request);
 }

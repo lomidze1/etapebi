@@ -10,6 +10,7 @@ export default {
         muted: '#9a948a',
         subtle: '#2a2a28',
         'muted-on-light': '#5a554f',
+        danger: '#d97757',
       },
       fontFamily: {
         sans: [
