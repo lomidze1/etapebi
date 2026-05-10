@@ -5,9 +5,6 @@ import mdx from '@astrojs/mdx';
 
 export default defineConfig({
   site: 'https://etapebi.com',
-  redirects: {
-    '/admin': '/admin/',
-  },
   integrations: [
     tailwind({ applyBaseStyles: false }),
     sitemap({
