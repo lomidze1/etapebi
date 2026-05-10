@@ -18,7 +18,7 @@ function isActive(href: string): boolean {
 
 <header class="border-b border-subtle">
   <div
-    class="max-w-5xl mx-auto px-6 py-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+    class="max-w-5xl mx-auto px-6 py-5 md:py-6 flex items-center justify-between gap-4"
   >
     <a
       href="/"
@@ -27,8 +27,9 @@ function isActive(href: string): boolean {
     >
       გიორგი ლომიძე
     </a>
-    <nav aria-label="ძირითადი ნავიგაცია">
-      <ul class="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
+
+    <nav aria-label="ძირითადი ნავიგაცია" class="hidden md:block">
+      <ul class="flex items-center gap-x-6 text-sm">
         {
           navItems.map((item) => {
             const active = isActive(item.href);
@@ -50,5 +51,114 @@ function isActive(href: string): boolean {
         }
       </ul>
     </nav>
+
+    <button
+      type="button"
+      id="mobile-menu-toggle"
+      class="md:hidden inline-flex items-center justify-center w-11 h-11 -mr-3 text-primary"
+      aria-label="მენიუს გახსნა"
+      aria-controls="mobile-menu"
+      aria-expanded="false"
+    >
+      <svg
+        data-icon="open"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="square"
+        aria-hidden="true"
+      >
+        <line x1="4" y1="7" x2="20" y2="7"></line>
+        <line x1="4" y1="12" x2="20" y2="12"></line>
+        <line x1="4" y1="17" x2="20" y2="17"></line>
+      </svg>
+      <svg
+        data-icon="close"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="square"
+        aria-hidden="true"
+        hidden
+      >
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+      </svg>
+    </button>
   </div>
+
+  <nav
+    id="mobile-menu"
+    aria-label="მობილური ნავიგაცია"
+    class="md:hidden hidden border-t border-subtle"
+  >
+    <ul class="max-w-5xl mx-auto px-6 py-2">
+      {
+        navItems.map((item) => {
+          const active = isActive(item.href);
+          return (
+            <li>
+              <a
+                href={item.href}
+                aria-current={active ? 'page' : undefined}
+                class:list={[
+                  'block py-3 text-base transition-colors hover:text-primary',
+                  active ? 'text-primary' : 'text-muted',
+                ]}
+              >
+                {item.label}
+              </a>
+            </li>
+          );
+        })
+      }
+    </ul>
+  </nav>
 </header>
+
+<script>
+  const toggle = document.getElementById('mobile-menu-toggle');
+  const menu = document.getElementById('mobile-menu');
+  const iconOpen = toggle?.querySelector<SVGElement>('[data-icon="open"]');
+  const iconClose = toggle?.querySelector<SVGElement>('[data-icon="close"]');
+
+  function setOpen(open: boolean) {
+    if (!toggle || !menu) return;
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute(
+      'aria-label',
+      open ? 'მენიუს დახურვა' : 'მენიუს გახსნა'
+    );
+    menu.classList.toggle('hidden', !open);
+    if (iconOpen) iconOpen.toggleAttribute('hidden', open);
+    if (iconClose) iconClose.toggleAttribute('hidden', !open);
+  }
+
+  toggle?.addEventListener('click', () => {
+    const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+    setOpen(!isOpen);
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (
+      event.key === 'Escape' &&
+      toggle?.getAttribute('aria-expanded') === 'true'
+    ) {
+      setOpen(false);
+      toggle.focus();
+    }
+  });
+
+  const desktopQuery = window.matchMedia('(min-width: 768px)');
+  desktopQuery.addEventListener('change', (event) => {
+    if (event.matches) setOpen(false);
+  });
+</script>
