@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ProjectCard from '../../components/ProjectCard.astro';
+import Container from '../../components/Container.astro';
 import { getCollection } from 'astro:content';
 
 const projects = (await getCollection('projects')).sort(
@@ -10,13 +11,13 @@ const projects = (await getCollection('projects')).sort(
 
 <BaseLayout
   title="პროექტები — გიორგი ლომიძე"
-  description="დასრულებული და მიმდინარე პროექტების ფოტოანგარიშები ხაშურში და საქართველოს მასშტაბით."
+  description="დასრულებული და მიმდინარე პროექტების ფოტოანგარიშები საქართველოს მასშტაბით."
 >
-  <section class="max-w-5xl mx-auto px-6 py-16 sm:py-20">
+  <Container as="section" class="py-16 sm:py-20">
     <header class="mb-10 sm:mb-12">
       <h1 class="text-4xl sm:text-5xl font-medium tracking-tight">პროექტები</h1>
       <p class="mt-4 text-base sm:text-lg text-muted max-w-2xl">
-        დოკუმენტურად აღრიცხული ობიექტების ფოტოანგარიშები ხაშურში და საქართველოს მასშტაბით.
+        დოკუმენტურად აღრიცხული ობიექტების ფოტოანგარიშები საქართველოს მასშტაბით.
       </p>
     </header>
 
@@ -31,5 +32,5 @@ const projects = (await getCollection('projects')).sort(
         </div>
       )
     }
-  </section>
+  </Container>
 </BaseLayout>

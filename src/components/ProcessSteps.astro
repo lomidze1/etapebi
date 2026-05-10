@@ -1,4 +1,6 @@
 ---
+import Container from './Container.astro';
+
 const steps = [
   {
     number: '01',
@@ -33,7 +35,7 @@ const steps = [
 ];
 ---
 
-<section aria-labelledby="process-heading" class="max-w-5xl mx-auto px-6 py-16 sm:py-24">
+<Container as="section" aria-labelledby="process-heading" class="py-16 sm:py-24">
   <h2
     id="process-heading"
     class="text-3xl sm:text-4xl font-medium tracking-tight"
@@ -61,4 +63,4 @@ const steps = [
       ))
     }
   </ol>
-</section>
+</Container>

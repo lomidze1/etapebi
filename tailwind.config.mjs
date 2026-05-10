@@ -11,14 +11,15 @@ export default {
         subtle: '#2a2a28',
         'muted-on-light': '#5a554f',
         danger: '#d97757',
+        success: '#7a9270',
       },
       fontFamily: {
         sans: [
+          '"Noto Sans Georgian Variable"',
           'system-ui',
           '-apple-system',
           'BlinkMacSystemFont',
           '"Segoe UI"',
-          '"Noto Sans Georgian"',
           '"Helvetica Neue"',
           'Arial',
           'sans-serif',

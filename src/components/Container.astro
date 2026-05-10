@@ -1,0 +1,14 @@
+---
+interface Props {
+  as?: keyof HTMLElementTagNameMap;
+  class?: string;
+  'aria-labelledby'?: string;
+  'aria-label'?: string;
+}
+
+const { as: Tag = 'div', class: className = '', ...rest } = Astro.props;
+---
+
+<Tag class:list={['max-w-5xl mx-auto px-6', className]} {...rest}>
+  <slot />
+</Tag>
