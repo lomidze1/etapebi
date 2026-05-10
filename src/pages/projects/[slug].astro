@@ -110,7 +110,7 @@ const metaDescription =
   description={metaDescription}
   extraJsonLd={[breadcrumbJsonLd, articleJsonLd]}
 >
-  <article class="max-w-5xl mx-auto px-6 py-16">
+  <article class="max-w-5xl mx-auto px-6 py-12 sm:py-16">
     <nav aria-label="ბილიკი" class="text-sm text-muted mb-8">
       <ol class="flex flex-wrap items-center gap-2">
         <li>
@@ -125,9 +125,9 @@ const metaDescription =
       </ol>
     </nav>
 
-    <header class="mb-12">
-      <h1 class="text-3xl sm:text-4xl font-medium tracking-tight">{data.title}</h1>
-      <p class="mt-3 text-lg text-muted">{data.location}</p>
+    <header class="mb-10 sm:mb-12">
+      <h1 class="text-2xl sm:text-3xl lg:text-4xl font-medium tracking-tight">{data.title}</h1>
+      <p class="mt-3 text-base sm:text-lg text-muted">{data.location}</p>
     </header>
 
     {
