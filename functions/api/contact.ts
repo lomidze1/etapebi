@@ -86,6 +86,8 @@ export async function onRequestPost(context: Context): Promise<Response> {
   });
 
   if (!emailRes.ok) {
+    const errorBody = await emailRes.text();
+    console.error('Resend API error', emailRes.status, errorBody);
     return redirect('/contact?error=server');
   }
 
