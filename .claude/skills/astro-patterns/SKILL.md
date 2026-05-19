@@ -169,6 +169,8 @@ Defined in `tailwind.config.mjs`:
 | `text-primary` | `#ede6d4` | Body text, headings |
 | `text-muted` | `#9a948a` | Secondary text, metadata, labels |
 | `border-subtle` | `#2a2a28` | Dividers, low-contrast borders |
+| `bg-success` / `text-success` | `#7a9270` | Form success feedback (contact result card) |
+| `bg-danger` / `text-danger` | `#d97757` | Form error feedback (contact result card) |
 
 Rules:
 

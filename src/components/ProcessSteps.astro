@@ -10,7 +10,7 @@ const steps = [
   },
   {
     number: '02',
-    title: 'ფოტოფიქსაცია',
+    title: 'ეტაპის ფოტოფიქსაცია',
     description:
       'ვაფიქსირებ ეტაპის ფაქტობრივ მდგომარეობას ერთიანი მეთოდოლოგიით — ხედი, ხარისხი, თარიღი.',
   },
@@ -22,7 +22,7 @@ const steps = [
   },
   {
     number: '04',
-    title: 'დოკუმენტური აღრიცხვა',
+    title: 'ანგარიშის გაერთიანება',
     description:
       'ვაფიქსირებ შედეგს საჯარო რეესტრის მოთხოვნებთან თანხვედრით.',
   },
@@ -52,10 +52,10 @@ const steps = [
     {
       steps.map((step) => (
         <li class="lg:px-4">
-          <div class="text-3xl font-medium text-muted">{step.number}</div>
+          <div class="text-2xl font-medium text-muted">{step.number}</div>
           <div class="mt-4 lg:border-t lg:border-subtle lg:pt-4">
             <h3 class="text-lg font-medium text-primary">{step.title}</h3>
-            <p class="mt-2 text-sm text-muted leading-relaxed">
+            <p class="mt-2 text-muted leading-relaxed">
               {step.description}
             </p>
           </div>
