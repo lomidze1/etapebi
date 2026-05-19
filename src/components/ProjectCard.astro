@@ -4,12 +4,14 @@ import type { CollectionEntry } from 'astro:content';
 
 interface Props {
   project: CollectionEntry<'projects'>;
+  headingLevel?: 'h2' | 'h3';
 }
 
-const { project } = Astro.props;
+const { project, headingLevel = 'h2' } = Astro.props;
 const { data } = project;
 const STAGE_COUNT = 5;
 const completed = new Set(data.stagesCompleted);
+const Heading = headingLevel;
 ---
 
 <article class="group">
@@ -39,12 +41,12 @@ const completed = new Set(data.stagesCompleted);
         )
       }
     </div>
-    <h2
+    <Heading
       id={`project-${project.id}-title`}
       class="text-lg font-medium tracking-tight text-primary group-hover:underline underline-offset-4"
     >
       {data.title}
-    </h2>
+    </Heading>
     <p class="mt-1 text-sm text-muted">{data.location}</p>
     <ol class="flex gap-1.5 mt-3" aria-label="ეტაპები">
       {

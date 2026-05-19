@@ -41,7 +41,7 @@ const websiteJsonLd = {
 
 <BaseLayout
   title="გიორგი ლომიძე — მშენებლობის ეტაპების სპეციალისტი"
-  description="ეტაპობრივი ფოტოანგარიში, ოქმების მომზადება და დოკუმენტური აღრიცხვა მშენებლობის პროცესისთვის საქართველოში."
+  description="ეტაპობრივი ფოტოანგარიში, ოქმების მომზადება და დოკუმენტური აღრიცხვა მშენებლობის პროცესისთვის. დამოუკიდებელი სპეციალისტი ხაშურსა და საქართველოს მასშტაბით."
   extraJsonLd={[websiteJsonLd]}
 >
   <Hero />
@@ -54,7 +54,7 @@ const websiteJsonLd = {
       მომსახურება
     </h2>
     <p class="mt-4 text-muted max-w-2xl">
-      სამი ძირითადი მიმართულება — ფოტოფიქსაცია, ოქმი, აღრიცხვა.
+      სამი ძირითადი მიმართულება — ეტაპობრივი ფოტოანგარიში, ოქმების მომზადება, დოკუმენტური აღრიცხვა.
     </p>
     <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {
@@ -81,13 +81,13 @@ const websiteJsonLd = {
         </p>
         <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 gap-8">
           {recentProjects.map((p) => (
-            <ProjectCard project={p} />
+            <ProjectCard project={p} headingLevel="h3" />
           ))}
         </div>
         <div class="mt-10">
           <a
             href="/projects"
-            class="inline-flex items-center gap-2 text-sm text-muted hover:text-primary transition-colors"
+            class="inline-flex items-center gap-2 py-2 text-sm text-muted underline underline-offset-4 hover:text-primary transition-colors"
           >
             ყველა პროექტის ნახვა
             <svg

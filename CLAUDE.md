@@ -34,6 +34,8 @@
 | Text secondary | Warm gray | `#9a948a` |
 | Border | Warm gray subtle | `#2a2a28` |
 | Text muted on light | Warm gray (dark variant) | `#5a554f` |
+| Feedback — წარმატება | Muted sage | `#7a9270` |
+| Feedback — შეცდომა | Muted terracotta | `#d97757` |
 
 დიზაინი მთლიანად მუქია (charcoal background) — არა „dark mode toggle", არამედ ბრენდი თავისთავად ასეთია.
 
