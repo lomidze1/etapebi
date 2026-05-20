@@ -9,7 +9,7 @@ interface Props {
 
 const { project, headingLevel = 'h2' } = Astro.props;
 const { data } = project;
-const STAGE_COUNT = 5;
+const STAGE_COUNT = data.stagesTotal;
 const completed = new Set(data.stagesCompleted);
 const Heading = headingLevel;
 ---

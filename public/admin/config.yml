@@ -53,6 +53,15 @@ collections:
           time_format: false,
           picker_utc: false
         }
+      - {
+          label: "ეტაპების საერთო რაოდენობა",
+          name: "stagesTotal",
+          widget: "number",
+          value_type: "int",
+          default: 5,
+          min: 1,
+          max: 10
+        }
       - label: "დასრულებული ეტაპები"
         name: "stagesCompleted"
         widget: "select"
@@ -65,6 +74,11 @@ collections:
           - { label: "მე-3 ეტაპი", value: 3 }
           - { label: "მე-4 ეტაპი", value: 4 }
           - { label: "მე-5 ეტაპი", value: 5 }
+          - { label: "მე-6 ეტაპი", value: 6 }
+          - { label: "მე-7 ეტაპი", value: 7 }
+          - { label: "მე-8 ეტაპი", value: 8 }
+          - { label: "მე-9 ეტაპი", value: 9 }
+          - { label: "მე-10 ეტაპი", value: 10 }
       - {
           label: "სათავე სურათი",
           name: "coverImage",

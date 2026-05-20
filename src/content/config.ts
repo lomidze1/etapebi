@@ -11,8 +11,9 @@ const projects = defineCollection({
       permitDate: z.coerce.date(),
       permitValidUntil: z.coerce.date(),
       buildingType: z.string(),
+      stagesTotal: z.coerce.number().int().min(1).max(10).default(5),
       stagesCompleted: z
-        .array(z.coerce.number().int().min(1).max(5))
+        .array(z.coerce.number().int().min(1).max(10))
         .default([]),
       coverImage: image().optional(),
       gallery: z.array(image()).default([]),
