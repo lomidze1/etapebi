@@ -20,7 +20,7 @@ const { project } = Astro.props;
 const { Content } = await render(project);
 const { data } = project;
 
-const STAGE_COUNT = 5;
+const STAGE_COUNT = data.stagesTotal;
 const completed = new Set(data.stagesCompleted);
 const currentStage: number | null = (() => {
   for (let i = 1; i <= STAGE_COUNT; i++) {
@@ -146,7 +146,7 @@ const metaDescription =
 
     <section aria-labelledby="stages-heading" class="mb-12">
       <h2 id="stages-heading" class="text-sm font-medium text-muted mb-4">ეტაპები</h2>
-      <ol class="flex flex-wrap gap-2" aria-label="მშენებლობის ხუთი ეტაპი">
+      <ol class="flex flex-wrap gap-2" aria-label="ეტაპები">
         {
           Array.from({ length: STAGE_COUNT }, (_, i) => i + 1).map((stage) => {
             const state = stageState(stage);
