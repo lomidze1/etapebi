@@ -20,14 +20,20 @@ function isActive(href: string): boolean {
 
 <header class="border-b border-subtle">
   <Container
-    class="py-5 md:py-6 flex items-center justify-between gap-4"
+    class="py-4 flex items-center justify-between gap-4"
   >
     <a
       href="/"
-      class="text-lg font-medium tracking-tight hover:text-primary transition-colors"
+      class="inline-flex items-center hover:opacity-80 transition-opacity"
       aria-label="გიორგი ლომიძე — მთავარ გვერდზე დაბრუნება"
     >
-      გიორგი ლომიძე
+      <img
+        src="/logo.svg"
+        alt="გიორგი ლომიძე"
+        width="56"
+        height="56"
+        class="h-14 w-auto"
+      />
     </a>
 
     <nav aria-label="ძირითადი ნავიგაცია" class="hidden md:block">
