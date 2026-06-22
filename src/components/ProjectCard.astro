@@ -12,6 +12,15 @@ const { data } = project;
 const STAGE_COUNT = data.stagesTotal;
 const completed = new Set(data.stagesCompleted);
 const Heading = headingLevel;
+
+// ლოკალური-მხოლოდ მესაკუთრეთა სია (gitignored). live-ზე ფაილი არ არსებობს,
+// glob ცარიელ ობიექტს აბრუნებს და სახელი არ ჩანს.
+const clientFiles = import.meta.glob('../data/clients.local.json', {
+  eager: true,
+  import: 'default',
+});
+const clientMap = (Object.values(clientFiles)[0] ?? {}) as Record<string, string>;
+const clientName = clientMap[project.id];
 ---
 
 <article class="group">
@@ -41,6 +50,16 @@ const Heading = headingLevel;
         )
       }
     </div>
+    {
+      clientName && (
+        <p
+          class="mb-1 inline-block border-l-2 border-muted pl-2 text-xs text-muted"
+          data-local-only
+        >
+          მესაკუთრე: {clientName}
+        </p>
+      )
+    }
     <Heading
       id={`project-${project.id}-title`}
       class="text-lg font-medium tracking-tight text-primary group-hover:underline underline-offset-4"

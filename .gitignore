@@ -2,6 +2,9 @@
 dist/
 .astro/
 
+# local-only data — owner names, never uploaded (visible only on localhost)
+*.local.json
+
 # dependencies
 node_modules/
 

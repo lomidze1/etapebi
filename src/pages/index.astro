@@ -22,7 +22,7 @@ const services = [
   {
     title: 'დოკუმენტური აღრიცხვა',
     description:
-      'ვაერთიანებ ეტაპის ფოტოანგარიშს, ოქმს და თანდართულ ნახაზებს ერთ პაკეტში. მესაკუთრე იღებს სრულ აღრიცხვას, რომელიც აკმაყოფილებს საჯარო რეესტრის მოთხოვნებს.',
+      'ვაერთიანებ ეტაპის ფოტოანგარიშს, ოქმს და თანდართულ ნახაზებს ერთ პაკეტში და წარვადგენ შესაბამის უწყებაში — საჯარო რეესტრის მოთხოვნებთან თანხვედრით.',
   },
 ];
 
@@ -46,7 +46,7 @@ const websiteJsonLd = {
 >
   <Hero />
 
-  <Container as="section" aria-labelledby="services-heading" class="py-16 sm:py-24">
+  <Container as="section" aria-labelledby="services-heading" class="py-12 sm:py-20">
     <h2
       id="services-heading"
       class="text-3xl sm:text-4xl font-medium tracking-tight"
@@ -67,9 +67,26 @@ const websiteJsonLd = {
 
   <ProcessSteps />
 
+  <Container as="section" aria-labelledby="about-heading" class="py-12 sm:py-20">
+    <h2
+      id="about-heading"
+      class="text-3xl sm:text-4xl font-medium tracking-tight"
+    >
+      შესახებ
+    </h2>
+    <div class="mt-6 max-w-2xl space-y-4">
+      <p class="text-base sm:text-lg text-primary leading-relaxed">
+        დამოუკიდებელი სპეციალისტი მშენებლობის ეტაპების დოკუმენტურ აღრიცხვაში. ვმუშაობ საქართველოს მასშტაბით.
+      </p>
+      <p class="text-base sm:text-lg text-primary leading-relaxed">
+        მშენებელი კომპანია მთავარი სამუშაოთი დაკავებულია — ფიზიკური მშენებლობით. დოკუმენტური აღრიცხვა ცალკე სპეციალისტს მოითხოვს, ფოკუსირებულს ფაქტობრივ ფიქსაციაზე და საჯარო რეესტრის მოთხოვნებთან თანხვედრაზე. ცალკე ხედი ამცირებს შეცდომას და ექსპერტიზის გადაკვეთას.
+      </p>
+    </div>
+  </Container>
+
   {
     recentProjects.length > 0 && (
-      <Container as="section" aria-labelledby="recent-heading" class="py-16 sm:py-24">
+      <Container as="section" aria-labelledby="recent-heading" class="py-12 sm:py-20">
         <h2
           id="recent-heading"
           class="text-3xl sm:text-4xl font-medium tracking-tight"
